@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.9", "3.10", "3.11"]
+        python-version: ["3.12"]
 
     steps:
     - uses: actions/checkout@v4
@@ -34,10 +34,12 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         python -m pip install flake8 pytest
-        python -m pip install flightradar24 FlightRadarAPI
+        python -m pip install flightradar24
         python -m pip install requests beautifulsoup4
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        python -m pip list
+    - name: List flightradar24 package contents
+      run: |
+        python -c "import flightradar24; import os; print(os.listdir(os.path.dirname(flightradar24.__file__)))"
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
