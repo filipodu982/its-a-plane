@@ -42,4 +42,4 @@ print(callsign, destination, departue, airplane, speed)
 
 
 o = AirplaneCatcher()
-o.getPlanes()
+o.get_planes()
