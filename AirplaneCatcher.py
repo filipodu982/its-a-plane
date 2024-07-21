@@ -1,5 +1,5 @@
 from math import acos, sin, cos, radians
-from flightradar24.api import FlightRadar24API
+from FlightRadar24.api import FlightRadar24API
 import config
 from time import sleep
 
