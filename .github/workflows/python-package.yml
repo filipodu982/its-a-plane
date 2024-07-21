@@ -37,7 +37,9 @@ jobs:
         python -m pip install flightradar24 FlightRadarAPI
         python -m pip install requests beautifulsoup4
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        python -m pip list
+    - name: List flightradar24 package contents
+      run: |
+        python -c "import flightradar24; import os; print(os.listdir(os.path.dirname(flightradar24.__file__)))"
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
