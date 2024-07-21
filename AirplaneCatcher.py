@@ -1,6 +1,7 @@
 from math import acos, sin, cos, radians
 from flightradar24 import *
 import config
+from time import sleep
 
 
 class AirplaneCatcher:
@@ -11,6 +12,11 @@ class AirplaneCatcher:
 
         self._frApi = FlightRadar24API()
         self._bounds = self._frApi.get_bounds(MY_ZONE)
+        self._flights_over_head = []
+
+    @property
+    def flight_over_head(self):
+        return self.return_flight_info(self._flights_over_head)
 
     def get_planes(self, bound=None):
         """Function looking for planes within specified bounds and returning list with the closest first"""
@@ -53,6 +59,20 @@ class AirplaneCatcher:
             closest_flight["aircraft"] = flights_list[0].aircraft_code
             closest_flight["altitude"] = flights_list[0].altitude
             return closest_flight
+
+    def run(self, debug=None):
+        any_planes = False
+        bound = None
+        if debug is not None:
+            bound = {"tl_y": 52.24, "tl_x": 20.77, "br_y": 52.04, "br_x": 21.16}
+        while not any_planes:
+            self._flights_over_head = self.get_planes(bound)
+            print(self._flights_over_head)
+            sleep(3)
+            if not self._flights_over_head:
+                sleep(1)
+            else:
+                any_planes = True
 
 
 if __name__ == "__main__":  # pragma: no cover

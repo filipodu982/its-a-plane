@@ -90,6 +90,31 @@ class TestAirplanes(unittest.TestCase):
         result = o.return_flight_info(flights_list)
         self.assertEqual(result, expected_result)
 
+    @mock.patch("AirplaneCatcher.sleep", return_value=None)
+    @mock.patch.object(AirplaneCatcher, "get_planes")
+    def test_run_no_planes(self, mock_get_planes, mock_sleep):
+        o = AirplaneCatcher()
+        mock_get_planes.side_effect = [[], [{"callsign": "ABC"}]]
+
+        o.run()
+
+        self.assertEqual(mock_get_planes.call_count, 2)
+        mock_sleep.assert_called_with(3)
+
+    @mock.patch("AirplaneCatcher.sleep", return_value=None)
+    @mock.patch.object(AirplaneCatcher, "get_planes")
+    def test_run_with_debug(self, mock_get_planes, mock_sleep):
+        o = AirplaneCatcher()
+        mock_get_planes.return_value = [{"Callsign": "ABC123"}]
+
+        o.run(debug=True)
+
+        self.assertEqual(mock_get_planes.call_count, 1)
+        mock_get_planes.assert_called_with(
+            {"tl_y": 52.24, "tl_x": 20.77, "br_y": 52.04, "br_x": 21.16}
+        )
+        mock_sleep.assert_called_once()
+
 
 if __name__ == "__main__":
     unittest.main()
