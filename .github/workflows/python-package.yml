@@ -37,11 +37,9 @@ jobs:
         pip install FlightRadarAPI
         pip install flightradar24
         python -m pip install requests beautifulsoup4
-      shell: powershell
     - name: List flightradar24 package contents
       run: |
         python -c "import flightradar24; import os; print(os.listdir(os.path.dirname(flightradar24.__file__)))"
-      shell: powershell
     - name: Lint with flake8
       if: always()
       run: |
@@ -53,3 +51,9 @@ jobs:
       if: always()
       run: |
         python test_unittest.py
+    - name: Print working directory
+      if: always()
+      run: |
+        Get-Location
+        Get-ChildItem -Recurse
+      shell: powershell
