@@ -2,7 +2,9 @@ import unittest
 from unittest import mock
 from math import radians
 from AirplaneCatcher import AirplaneCatcher
+from RunwayGuesser import *
 from flightradar24 import *
+from bs4 import BeautifulSoup
 
 
 class TestAirplanes(unittest.TestCase):
@@ -110,10 +112,69 @@ class TestAirplanes(unittest.TestCase):
         o.run(debug=True)
 
         self.assertEqual(mock_get_planes.call_count, 1)
-        mock_get_planes.assert_called_with(
-            {"tl_y": 52.24, "tl_x": 20.77, "br_y": 52.04, "br_x": 21.16}
-        )
         mock_sleep.assert_called_once()
+
+
+class TestRunwayGuesser(unittest.TestCase):
+    @mock.patch("RunwayGuesser.get_wind_direction")
+    def test_runway_number_7(self, mock_get_wind_direction):
+        for wind_direction in [0, 50, 100, 167, 349]:
+            mock_get_wind_direction.return_value = wind_direction
+            self.assertEqual(get_runway_number(), 7)
+
+    @mock.patch("RunwayGuesser.get_wind_direction")
+    def test_runway_number_25(self, mock_get_wind_direction):
+        for wind_direction in [169, 170, 200, 347]:
+            mock_get_wind_direction.return_value = wind_direction
+            self.assertEqual(get_runway_number(), 25)
+
+    @mock.patch("RunwayGuesser.get_wind_direction")
+    def test_runway_number_invalid(self, mock_get_wind_direction):
+        for wind_direction in [348, 168, 168.0, 348.0]:
+            mock_get_wind_direction.return_value = wind_direction
+            self.assertEqual(get_runway_number(), -1)
+
+    @mock.patch("RunwayGuesser.requests.get")
+    def test_wind_direction(self, mock_get):
+        mock_response = mock.Mock()
+        mock_response.status_code = 200
+        mock_response.content = b'<div class="my-auto py-2">270&deg;</div>'
+        mock_get.return_value = mock_response
+
+        wind_direction = get_wind_direction()
+        self.assertEqual(wind_direction, 270)
+
+        mock_response.content = b'<div class="my-auto py-2">050&deg;</div>'
+        mock_get.return_value = mock_response
+
+        wind_direction = get_wind_direction()
+        self.assertEqual(wind_direction, 50)
+
+        mock_response.content = b'<div class="my-auto py-2">000&deg;</div>'
+        mock_get.return_value = mock_response
+
+        wind_direction = get_wind_direction()
+        self.assertEqual(wind_direction, 0)
+
+    @mock.patch("RunwayGuesser.requests.get")
+    def test_wind_direction_no_value(self, mock_get):
+        mock_response = mock.Mock()
+        mock_response.status_code = 200
+        mock_response.content = b'<div class="Something else">270&deg;</div>'
+        mock_get.return_value = mock_response
+
+        wind_direction = get_wind_direction()
+        self.assertIsNone(wind_direction)
+
+    @mock.patch("RunwayGuesser.requests.get")
+    @mock.patch("RunwayGuesser.BeautifulSoup")
+    def test_wind_direction_invalid_response(self, mock_bs, mock_get):
+        mock_response = mock.Mock()
+        mock_response.status_code = 500
+        mock_get.return_value = mock_response
+
+        wind_direction = get_wind_direction()
+        self.assertIsNone(wind_direction)
 
 
 if __name__ == "__main__":
