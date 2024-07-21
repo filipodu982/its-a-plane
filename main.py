@@ -1,19 +1,15 @@
 from math import acos, sin, cos, radians
 from flightradar24 import *
+import config
+from AirplaneCatcher import AirplaneCatcher
 
-MY_ZONE = {"tl_y": 50.12,
-           "tl_x": 19.96,
-           "br_y": 50.082574857741236,
-           "br_x": 20.07246702608472}
+MY_ZONE = config.MY_ZONE
 
-TEST_ZONE = {"tl_y": 52.24,
-             "tl_x": 20.77,
-             "br_y": 52.04,
-             "br_x": 21.16}
+TEST_ZONE = config.TEST_ZONE
 
 EARTH_RADIUS = 6371
 
-HOME = [radians(50.10420019666149), radians(20.010051440763643)]
+HOME = config.HOME
 
 
 def dist_from_home(lat,lon,home):
