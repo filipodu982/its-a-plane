@@ -3,7 +3,7 @@ from unittest import mock
 from math import radians
 from AirplaneCatcher import AirplaneCatcher
 from RunwayGuesser import *
-from flightradar24 import *
+from flightradar24 import FlightRadar24API
 from bs4 import BeautifulSoup
 
 
