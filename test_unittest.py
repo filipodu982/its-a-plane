@@ -99,7 +99,7 @@ class TestAirplanes(unittest.TestCase):
         o.run()
 
         self.assertEqual(mock_get_planes.call_count, 2)
-        mock_sleep.assert_called_with(3)
+        mock_sleep.assert_called_with(2)
 
     @mock.patch("AirplaneCatcher.sleep", return_value=None)
     @mock.patch.object(AirplaneCatcher, "get_planes")

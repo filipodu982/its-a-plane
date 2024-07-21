@@ -1,9 +1,8 @@
-from AirplaneCatcher import AirplaneCatcher
 from threading import Thread
+from AirplaneCatcher import AirplaneCatcher
 
 
 o = AirplaneCatcher()
-# o.run(True)
 flight_list = {}
 
 thread1 = Thread(target=o.run, args=[1])

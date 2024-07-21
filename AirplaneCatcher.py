@@ -16,6 +16,7 @@ class AirplaneCatcher:
 
     @property
     def flight_over_head(self):
+        """Getter for getting 1 flight which is currently over my head - closest to HOME from all flights in boundary"""
         return self.return_flight_info(self._flights_over_head)
 
     def get_planes(self, bound=None):
@@ -48,6 +49,7 @@ class AirplaneCatcher:
         return dist
 
     def return_flight_info(self, flights_list):
+        """Method which formats information about the closest flight and puts it into dict"""
         if not flights_list:
             return None
         else:
@@ -61,14 +63,22 @@ class AirplaneCatcher:
             return closest_flight
 
     def run(self, debug=None):
+        """Class executable which uses either debug bound or real bound
+        and then loops over until any plane is detected within the boundary"""
         any_planes = False
         bound = None
         if debug is not None:
-            bound = {"tl_y": 52.24, "tl_x": 20.77, "br_y": 52.04, "br_x": 21.16}
+            bound = {"tl_y": 52.24, "tl_x": 20.77, "br_y": 52.04, "br_x": 21.16}  # EPWA
+            bound = {
+                "tl_y": 50.08758452607344,
+                "tl_x": 19.64296274327239,
+                "br_y": 50.05570708315496,
+                "br_x": 19.777111437633874,
+            }  # EPKK WEST
         while not any_planes:
             self._flights_over_head = self.get_planes(bound)
-            print(self._flights_over_head)
-            sleep(3)
+            # print(self._flights_over_head)
+            sleep(2)
             if not self._flights_over_head:
                 sleep(1)
             else:
