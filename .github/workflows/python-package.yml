@@ -26,10 +26,10 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Create config.py
       run: |
-        echo "from math import radians" > config.py
-        echo "MY_ZONE = ${{ secrets.MY_ZONE }}" >> config.py
-        echo "TEST_ZONE = ${{ secrets.TEST_ZONE }}" >> config.py
-        echo "HOME = ${{ secrets.HOME }}" >> config.py
+        echo from math import radians > config.py
+        echo MY_ZONE = ${{ secrets.MY_ZONE }} >> config.py
+        echo TEST_ZONE = ${{ secrets.TEST_ZONE }} >> config.py
+        echo HOME = ${{ secrets.HOME }} >> config.py
         cat config.py
     - name: Install dependencies
       run: |
