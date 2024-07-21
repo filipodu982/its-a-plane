@@ -30,6 +30,7 @@ jobs:
         echo "MY_ZONE = '${{ secrets.MY_ZONE }}'" >> config.py
         echo "TEST_ZONE = '${{ secrets.TEST_ZONE }}'" >> config.py
         echo "HOME = '${{secrets.HOME}}'" >> config.py
+        cat config.py
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
