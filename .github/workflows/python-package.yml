@@ -34,7 +34,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         python -m pip install flake8 pytest
-        python -m pip install flightradar24
+        python -m pip3 install flightradar24
         python -m pip install requests beautifulsoup4
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: List flightradar24 package contents
