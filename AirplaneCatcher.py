@@ -1,18 +1,13 @@
 from math import acos, sin, cos, radians
 from flightradar24 import *
 from functools import partial
+import config
 
 class AirplaneCatcher():
     def __init__(self) -> None:
-        self.MY_ZONE = {"tl_y": 50.12,
-            "tl_x": 19.96,
-           "br_y": 50.082574857741236,
-           "br_x": 20.07246702608472}
+        self.MY_ZONE = config.MY_ZONE
 
-        self.TEST_ZONE = {"tl_y": 52.24,
-             "tl_x": 20.77,
-             "br_y": 52.04,
-             "br_x": 21.16}
+        self.TEST_ZONE = config.TEST_ZONE
         
 
         self._frApi = FlightRadar24API()
@@ -32,7 +27,7 @@ class AirplaneCatcher():
     def dist_from_home(self,lat,lon):
         """Calculate great circle distance between the plane and home location"""
         EARTH_RADIUS = 6371
-        HOME = [radians(50.10420019666149), radians(20.010051440763643)]
+        HOME = config.HOME
 
         lat = radians(lat)
         lon = radians(lon)
