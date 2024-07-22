@@ -24,6 +24,22 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python-version }}
+    - name: Create Config
+      run: |
+        cat <<EOL > config.py
+        from math import radians
+
+        MY_ZONE = {
+            "tl_y": 52.24,
+            "tl_x": 20.77,
+            "br_y": 52.04,
+            "br_x": 21.16,
+        }
+        
+        TEST_ZONE = {"tl_y": 52.24, "tl_x": 20.77, "br_y": 52.04, "br_x": 21.16}
+        
+        HOME = [radians(52.163686448190084), radians(21.076483819)]
+        EOL
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
